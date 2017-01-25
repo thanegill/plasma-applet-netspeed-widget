@@ -162,7 +162,7 @@ Item {
     }
 
     Text {
-        id: downIcon
+        id: upIcon
         clip: true
 
         height: singleLine ? parent.height : parent.height / 2
@@ -173,63 +173,9 @@ Item {
         y: 0
         font.pixelSize: height * fontHeightRatio * fontSizeScale
 
-        text: showSeparately ? '↓' : '↓↑'
+        text: showSeparately ? '↑' : '↓↑'
         color: theme.textColor
         visible: showIcons
-    }
-
-    Text {
-        id: downText
-        clip: true
-
-        height: singleLine ? parent.height : parent.height / 2
-        width: speedTextMetrics.advanceWidth / speedTextMetrics.height * height * fontSizeScale
-
-        horizontalAlignment: Text.AlignRight
-        verticalAlignment: Text.AlignVCenter
-        anchors.left: showIcons ? downIcon.right : offsetItem.right
-        anchors.leftMargin: showIcons ? font.pixelSize * marginFactor : 0
-        y: 0
-        font.pixelSize: height * fontHeightRatio * fontSizeScale
-
-        text: speedText(showSeparately ? downSpeed : downSpeed + upSpeed)
-        color: speedColor(showSeparately ? downSpeed : downSpeed + upSpeed)
-    }
-
-    Text {
-        id: downUnitText
-        clip: true
-
-        height: singleLine ? parent.height : parent.height / 2
-        width: unitTextMetrics.advanceWidth / unitTextMetrics.height * height * fontSizeScale
-
-        verticalAlignment: Text.AlignVCenter
-        anchors.left: downText.right
-        anchors.leftMargin: font.pixelSize * marginFactor
-        y: 0
-        font.pixelSize: height * fontHeightRatio * fontSizeScale
-
-        text: speedUnit(showSeparately ? downSpeed : downSpeed + upSpeed)
-        color: theme.textColor
-        visible: showUnits
-    }
-
-    Text {
-        id: upIcon
-        clip: true
-
-        height: singleLine ? parent.height : parent.height / 2
-        width: iconTextMetrics.advanceWidth / iconTextMetrics.height * height * fontSizeScale
-
-        verticalAlignment: Text.AlignVCenter
-        anchors.left: (singleLine && showUnits) ? downUnitText.right : (singleLine ? downText.right : offsetItem.right)
-        anchors.leftMargin: singleLine ? font.pixelSize * marginFactor : 0
-        y: singleLine ? 0 : parent.height / 2
-        font.pixelSize: height * fontHeightRatio * fontSizeScale
-
-        text: '↑'
-        color: theme.textColor
-        visible: showSeparately && showIcons
     }
 
     Text {
@@ -241,14 +187,13 @@ Item {
 
         horizontalAlignment: Text.AlignRight
         verticalAlignment: Text.AlignVCenter
-        anchors.left: showIcons ? upIcon.right : ((singleLine && showUnits) ? downUnitText.right : (singleLine ? downText.right : offsetItem.right))
-        anchors.leftMargin: (showIcons || singleLine) ? font.pixelSize * marginFactor : 0
-        y: singleLine ? 0 : parent.height / 2
+        anchors.left: showIcons ? upIcon.right : offsetItem.right
+        anchors.leftMargin: showIcons ? font.pixelSize * marginFactor : 0
+        y: 0
         font.pixelSize: height * fontHeightRatio * fontSizeScale
 
-        text: speedText(upSpeed)
-        color: speedColor(upSpeed)
-        visible: showSeparately
+        text: speedText(showSeparately ? upSpeed : downSpeed + upSpeed)
+        color: speedColor(showSeparately ? upSpeed : downSpeed + upSpeed)
     }
 
     Text {
@@ -261,10 +206,65 @@ Item {
         verticalAlignment: Text.AlignVCenter
         anchors.left: upText.right
         anchors.leftMargin: font.pixelSize * marginFactor
+        y: 0
+        font.pixelSize: height * fontHeightRatio * fontSizeScale
+
+        text: speedUnit(showSeparately ? upSpeed : downSpeed + upSpeed)
+        color: theme.textColor
+        visible: showUnits
+    }
+
+    Text {
+        id: downIcon
+        clip: true
+
+        height: singleLine ? parent.height : parent.height / 2
+        width: iconTextMetrics.advanceWidth / iconTextMetrics.height * height * fontSizeScale
+
+        verticalAlignment: Text.AlignVCenter
+        anchors.left: (singleLine && showUnits) ? upUnitText.right : (singleLine ? upText.right : offsetItem.right)
+        anchors.leftMargin: singleLine ? font.pixelSize * marginFactor : 0
         y: singleLine ? 0 : parent.height / 2
         font.pixelSize: height * fontHeightRatio * fontSizeScale
 
-        text: speedUnit(upSpeed)
+        text: '↓'
+        color: theme.textColor
+        visible: showSeparately && showIcons
+    }
+
+    Text {
+        id: downText
+        clip: true
+
+        height: singleLine ? parent.height : parent.height / 2
+        width: speedTextMetrics.advanceWidth / speedTextMetrics.height * height * fontSizeScale
+
+        horizontalAlignment: Text.AlignRight
+        verticalAlignment: Text.AlignVCenter
+        anchors.left: showIcons ? downIcon.right : ((singleLine && showUnits) ? upUnitText.right : (singleLine ? upText.right : offsetItem.right))
+        anchors.leftMargin: (showIcons || singleLine) ? font.pixelSize * marginFactor : 0
+        y: singleLine ? 0 : parent.height / 2
+        font.pixelSize: height * fontHeightRatio * fontSizeScale
+
+        text: speedText(downSpeed)
+        color: speedColor(downSpeed)
+        visible: showSeparately
+    }
+
+    Text {
+        id: downUnitText
+        clip: true
+
+        height: singleLine ? parent.height : parent.height / 2
+        width: unitTextMetrics.advanceWidth / unitTextMetrics.height * height * fontSizeScale
+
+        verticalAlignment: Text.AlignVCenter
+        anchors.left: downText.right
+        anchors.leftMargin: font.pixelSize * marginFactor
+        y: singleLine ? 0 : parent.height / 2
+        font.pixelSize: height * fontHeightRatio * fontSizeScale
+
+        text: speedUnit(downSpeed)
         color: theme.textColor
         visible: showSeparately && showUnits
     }
